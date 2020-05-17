@@ -16,19 +16,21 @@
   (if (> end start) 
       (loop for i from start to end 
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
-					    (cons (cons i (cdr current-point)) (+ current-steps counter))
-					    (cons (cons (car current-point) i) (+ current-steps counter)))))
+							(cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
+							(cons (cons (car current-point) i) (1- (+ current-steps counter))))))
       (loop for i from start downto end 
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
-					    (cons (cons i (cdr current-point)) (+ current-steps counter))
-					    (cons (cons (car current-point) i) (+ current-steps counter)))))))
+							(cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
+							(cons (cons (car current-point) i) (1- (+ current-steps counter))))))))
+
 
 (defun find-intersection-points (nodes-1 nodes-2 check-steps)
   (if check-steps
-      (loop for node in nodes-1
-	 collect (car (remove-if-not #'(lambda (x) (equal (car node) (car x))) nodes-2)))
+      (remove-if #'null (loop for node in nodes-1
+		     collect (car (remove-if #'null (mapcar #'(lambda (checkn) (if (equal (car node) (car checkn)) (cons node checkn))) nodes-2)))))     
       (loop for node in nodes-1
 	 collect (car (remove-if-not #'(lambda (x) (equal node x)) nodes-2)))))
+
 
 (defun find-manhattan-distance (intersection)
   (apply #'min (remove 0 (mapcar
@@ -36,11 +38,18 @@
 			      (+ (abs (caar node)) (abs (cdar node))))
 			  intersection))))
 
-(defun find-min-steps (intersection)
+
+;; (defun find-min-steps (intersection)
+;;   (apply #'min (remove 0 (mapcar
+;; 			  #'(lambda (node)
+;; 			      (cdr node))
+;; 			  intersection))))
+
+(defun find-min-steps (intersect)
   (apply #'min (remove 0 (mapcar
-			  #'(lambda (node)
-			      (cdr node))
-			  intersection))))
+			  #'(lambda (x) (+ (cdar x) (cddr x)))
+			  intersect))))
+
 
 (defun build-points (current-point circuit-point-list &optional current-steps)
   (if (not circuit-point-list) 
@@ -86,9 +95,11 @@
 		     (cdr circuit-point-list)
 		     nil))))))
 
+
 (defparameter *nodes1* (build-points (cons 0 0) (car (file-get-lines "data/d3-test.txt")) 0))
 (defparameter *nodes2* (build-points (cons 0 0) (cadr (file-get-lines "data/d3-test.txt")) 0))
 (defparameter *intersect* (remove-if #'null (find-intersection-points *nodes1* *nodes2* t)))
 ;; (defparameter *result* (find-manhattan-distance *intersect*))
 (defparameter *result2* (find-min-steps *intersect*))
+
 
