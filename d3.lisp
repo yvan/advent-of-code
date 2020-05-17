@@ -39,12 +39,6 @@
 			  intersection))))
 
 
-;; (defun find-min-steps (intersection)
-;;   (apply #'min (remove 0 (mapcar
-;; 			  #'(lambda (node)
-;; 			      (cdr node))
-;; 			  intersection))))
-
 (defun find-min-steps (intersect)
   (apply #'min (remove 0 (mapcar
 			  #'(lambda (x) (+ (cdar x) (cddr x)))
@@ -67,22 +61,6 @@
 			  end
 			  (if current-steps current-steps 0)))
 	     (new-steps (if current-steps (cdar (last new-points)) nil)))
-	;; (print (format nil "current-point: ~a" current-point))
-	;; (print (format nil "circuit-point: ~a" circuit-point))
-	;; (print (format nil "direction: ~a" direction))
-	;; (print (format nil "x-y: ~a" x-y))
-	;; (print (format nil "end-value: ~a" end-value))
-	;; (print (format nil "sign: ~a" sign))
-	;; (print (format nil "start: ~a" start))
-	;; (print (format nil "end: ~a" end))
-	;; (print (format nil "new-point: ~a" (car (last new-points))))
-	;; (print "")
-	(print "x")
-	(print new-steps)
-	(print "last steps")
-	(print (last new-points))
-	(print "y")
-	(print (cdar (last new-points)))
 	(if current-steps
 	    (append new-points
 		    (build-points
@@ -96,10 +74,10 @@
 		     nil))))))
 
 
-(defparameter *nodes1* (build-points (cons 0 0) (car (file-get-lines "data/d3-test.txt")) 0))
-(defparameter *nodes2* (build-points (cons 0 0) (cadr (file-get-lines "data/d3-test.txt")) 0))
+(defparameter *nodes1* (build-points (cons 0 0) (car (file-get-lines "data/d3.txt")) 0))
+(defparameter *nodes2* (build-points (cons 0 0) (cadr (file-get-lines "data/d3.txt")) 0))
 (defparameter *intersect* (remove-if #'null (find-intersection-points *nodes1* *nodes2* t)))
-;; (defparameter *result* (find-manhattan-distance *intersect*))
+(defparameter *result* (find-manhattan-distance *intersect*))
 (defparameter *result2* (find-min-steps *intersect*))
 
 
