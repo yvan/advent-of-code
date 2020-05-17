@@ -16,12 +16,12 @@
   (if (> end start) 
       (loop for i from start to end 
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
-					    (cons (cons i (cdr current-point)) (+ current-steps counter))
-					    (cons (cons (car current-point) i) (+ current-steps counter)))))
+                                                        (cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
+                                                        (cons (cons (car current-point) i) (1- (+ current-steps counter))))))
       (loop for i from start downto end 
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
-					    (cons (cons i (cdr current-point)) (+ current-steps counter))
-					    (cons (cons (car current-point) i) (+ current-steps counter)))))))
+                                                        (cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
+                                                        (cons (cons (car current-point) i) (1- (+ current-steps counter))))))))
 
 (defun find-intersection-points (nodes-1 nodes-2 check-steps)
   (if check-steps
@@ -68,12 +68,12 @@
 	;; (print (format nil "end: ~a" end))
 	;; (print (format nil "new-point: ~a" (car (last new-points))))
 	;; (print "")
-	(print "x")
-	(print new-steps)
-	(print "last steps")
-	(print (last new-points))
-	(print "y")
-	(print (cdar (last new-points)))
+	;; (print "x")
+	;; (print new-steps)
+	;; (print "last steps")
+	;; (print (last new-points))
+	;; (print "y")
+	;; (print (cdar (last new-points)))
 	(if current-steps
 	    (append new-points
 		    (build-points
