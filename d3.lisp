@@ -22,10 +22,7 @@
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
 							(cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
 							(cons (cons (car current-point) i) (1- (+ current-steps counter))))))))
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 
 (defun find-intersection-points (nodes-1 nodes-2 check-steps)
   (if check-steps
