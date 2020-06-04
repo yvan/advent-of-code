@@ -1,4 +1,5 @@
 (ql:quickload "str")
+
 (defun file-get-lines (filename)
   (with-open-file (stream filename)
     (loop for line = (read-line stream nil)
