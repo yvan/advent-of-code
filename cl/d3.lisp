@@ -13,7 +13,7 @@
 (defun build-points-helper (x-y current-point start end current-steps)
   (print "current steps func start")
   (print current-steps)
-  (setq counter 0)
+  (setf counter 0)
   (if (> end start) 
       (loop for i from start to end 
 	 collect (progn (setq counter (1+ counter)) (if (equal x-y #\x)
@@ -24,7 +24,6 @@
 							(cons (cons i (cdr current-point)) (1- (+ current-steps counter)))
 							(cons (cons (car current-point) i) (1- (+ current-steps counter))))))))
 
-
 (defun find-intersection-points (nodes-1 nodes-2 check-steps)
   (if check-steps
       (remove-if #'null (loop for node in nodes-1
@@ -32,19 +31,16 @@
       (loop for node in nodes-1
 	 collect (car (remove-if-not #'(lambda (x) (equal node x)) nodes-2)))))
 
-
 (defun find-manhattan-distance (intersection)
   (apply #'min (remove 0 (mapcar
 			  #'(lambda (node)
 			      (+ (abs (caar node)) (abs (cdar node))))
 			  intersection))))
 
-
 (defun find-min-steps (intersect)
   (apply #'min (remove 0 (mapcar
 			  #'(lambda (x) (+ (cdar x) (cddr x)))
 			  intersect))))
-
 
 (defun build-points (current-point circuit-point-list &optional current-steps)
   (if (not circuit-point-list) 
@@ -74,11 +70,13 @@
 		     (cdr circuit-point-list)
 		     nil))))))
 
-
-(defparameter *nodes1* (build-points (cons 0 0) (car (file-get-lines "data/d3.txt")) 0))
-(defparameter *nodes2* (build-points (cons 0 0) (cadr (file-get-lines "data/d3.txt")) 0))
-(defparameter *intersect* (remove-if #'null (find-intersection-points *nodes1* *nodes2* t)))
+(defparameter *nodes1* (build-points
+			(cons 0 0)
+			(car (file-get-lines "data/d3.txt")) 0))
+(defparameter *nodes2* (build-points
+			(cons 0 0)
+			(cadr (file-get-lines "data/d3.txt")) 0))
+(defparameter *intersect* (remove-if #'null
+				     (find-intersection-points *nodes1* *nodes2* t)))
 (defparameter *result* (find-manhattan-distance *intersect*))
 (defparameter *result2* (find-min-steps *intersect*))
-
-
